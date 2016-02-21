@@ -1,0 +1,16 @@
+
+-- Get most likely to hate, by obtaining movies that are the same
+-- as those of movies the use has only partially watched and rated low
+-- if they watched it and took the time to rate it low that means they must definitely
+-- hate it. 2nd most likely to hate are partially watched movies without a rating or a category
+-- like.
+SELECT * FROM
+(SELECT DISTINCT hatedmovie.name FROM
+(SELECT genre.name as name, genre.idGenre as target, genre.idGenre as idGenre, user.idUser as idUser
+FROM User AS user
+INNER JOIN user_to_genre AS ug ON
+user.idUser = ug.idUser
+INNER JOIN Genre as genre
+ON genre.idGenre = ug.idGenre AND user.idUser = user.idUser) AS hatedmovie
+INNER JOIN Genre as g
+where hatedmovie.idGenre != g.idGenre AND hatedmovie.idUser != 13) as hated_genres;
